@@ -23,17 +23,18 @@ class ZpCryptoImpl implements ZpCrypto {
   factory ZpCryptoImpl.wasm(FutureOr<WasmModule> module) =>
       ZpCryptoImpl(module as ExternalLibrary);
   ZpCryptoImpl.raw(this._platform);
-  String createUserKeyModel(
+  Future<String> createUserKeyModel(
           {required String identifierName,
           required String masterPassword,
           required String raw,
           dynamic hint}) =>
-      _platform.executeSync(FlutterRustBridgeSyncTask(
-        callFfi: () => _platform.inner.wire_create_user_key_model(
+      _platform.executeNormal(FlutterRustBridgeTask(
+        callFfi: (port_) => _platform.inner.wire_create_user_key_model(
+            port_,
             _platform.api2wire_String(identifierName),
             _platform.api2wire_String(masterPassword),
             _platform.api2wire_String(raw)),
-        parseSuccessData: _wire2api_SyncReturn_String,
+        parseSuccessData: _wire2api_String,
         constMeta: kCreateUserKeyModelConstMeta,
         argValues: [identifierName, masterPassword, raw],
         hint: hint,
@@ -395,12 +396,14 @@ class ZpCryptoWire implements FlutterRustBridgeWireBase {
   late final _store_dart_post_cobject = _store_dart_post_cobjectPtr
       .asFunction<void Function(DartPostCObjectFnType)>();
 
-  WireSyncReturnStruct wire_create_user_key_model(
+  void wire_create_user_key_model(
+    int port_,
     ffi.Pointer<wire_uint_8_list> identifier_name,
     ffi.Pointer<wire_uint_8_list> master_password,
     ffi.Pointer<wire_uint_8_list> raw,
   ) {
     return _wire_create_user_key_model(
+      port_,
       identifier_name,
       master_password,
       raw,
@@ -409,13 +412,14 @@ class ZpCryptoWire implements FlutterRustBridgeWireBase {
 
   late final _wire_create_user_key_modelPtr = _lookup<
       ffi.NativeFunction<
-          WireSyncReturnStruct Function(
+          ffi.Void Function(
+              ffi.Int64,
               ffi.Pointer<wire_uint_8_list>,
               ffi.Pointer<wire_uint_8_list>,
               ffi.Pointer<wire_uint_8_list>)>>('wire_create_user_key_model');
   late final _wire_create_user_key_model =
       _wire_create_user_key_modelPtr.asFunction<
-          WireSyncReturnStruct Function(ffi.Pointer<wire_uint_8_list>,
+          void Function(int, ffi.Pointer<wire_uint_8_list>,
               ffi.Pointer<wire_uint_8_list>, ffi.Pointer<wire_uint_8_list>)>();
 
   WireSyncReturnStruct wire_generate_secret_key() {

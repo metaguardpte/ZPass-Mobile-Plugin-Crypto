@@ -8,7 +8,7 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge.dart';
 
 abstract class ZpCrypto {
   /// 生成注册使用的结构体，raw为 secret_key export 后的十六进制字符串
-  String createUserKeyModel(
+  Future<String> createUserKeyModel(
       {required String identifierName,
       required String masterPassword,
       required String raw,

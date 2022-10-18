@@ -22,13 +22,11 @@ class ZpassCrypto {
         required String raw,
         dynamic hint}) {
     try {
-      return Future.value(
-        zpCrypto.createUserKeyModel(
-          identifierName: identifierName,
-          masterPassword: masterPassword,
-          raw: raw,
-          hint: hint,
-        ),
+      return zpCrypto.createUserKeyModel(
+        identifierName: identifierName,
+        masterPassword: masterPassword,
+        raw: raw,
+        hint: hint,
       );
     } catch (e) {
      return Future.value(null);
