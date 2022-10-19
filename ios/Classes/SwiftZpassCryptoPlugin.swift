@@ -11,4 +11,8 @@ public class SwiftZpassCryptoPlugin: NSObject, FlutterPlugin {
   public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
     result("iOS " + UIDevice.current.systemVersion)
   }
+
+  public static func dummyMethodToEnforceBundling() {
+    dummy_method_to_enforce_bundling()
+  }
 }
