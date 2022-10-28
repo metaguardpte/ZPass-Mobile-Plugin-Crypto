@@ -159,8 +159,7 @@ class ZpCryptoImpl implements ZpCrypto {
   String offlineLogin(
           {required String clientId,
           required String identifierName,
-          required String masterPassword,
-          required String secretKey,
+          required String masterKey,
           required String masterKeyHash,
           String? personalDataKey,
           String? enterpriseDataKey,
@@ -170,8 +169,7 @@ class ZpCryptoImpl implements ZpCrypto {
         callFfi: () => _platform.inner.wire_offline_login(
             _platform.api2wire_String(clientId),
             _platform.api2wire_String(identifierName),
-            _platform.api2wire_String(masterPassword),
-            _platform.api2wire_String(secretKey),
+            _platform.api2wire_String(masterKey),
             _platform.api2wire_String(masterKeyHash),
             _platform.api2wire_opt_String(personalDataKey),
             _platform.api2wire_opt_String(enterpriseDataKey),
@@ -181,8 +179,7 @@ class ZpCryptoImpl implements ZpCrypto {
         argValues: [
           clientId,
           identifierName,
-          masterPassword,
-          secretKey,
+          masterKey,
           masterKeyHash,
           personalDataKey,
           enterpriseDataKey,
@@ -197,8 +194,7 @@ class ZpCryptoImpl implements ZpCrypto {
         argNames: [
           "clientId",
           "identifierName",
-          "masterPassword",
-          "secretKey",
+          "masterKey",
           "masterKeyHash",
           "personalDataKey",
           "enterpriseDataKey",
@@ -237,6 +233,46 @@ class ZpCryptoImpl implements ZpCrypto {
       const FlutterRustBridgeTaskConstMeta(
         debugName: "destory",
         argNames: ["clientId"],
+      );
+
+  String getDataKeyRequestBody(
+          {required String clientId, required String payload, dynamic hint}) =>
+      _platform.executeSync(FlutterRustBridgeSyncTask(
+        callFfi: () => _platform.inner.wire_get_data_key_request_body(
+            _platform.api2wire_String(clientId),
+            _platform.api2wire_String(payload)),
+        parseSuccessData: _wire2api_SyncReturn_String,
+        constMeta: kGetDataKeyRequestBodyConstMeta,
+        argValues: [clientId, payload],
+        hint: hint,
+      ));
+
+  FlutterRustBridgeTaskConstMeta get kGetDataKeyRequestBodyConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "get_data_key_request_body",
+        argNames: ["clientId", "payload"],
+      );
+
+  String deriveDataKey(
+          {required String clientId,
+          required String dataKey,
+          required bool isPersonal,
+          dynamic hint}) =>
+      _platform.executeSync(FlutterRustBridgeSyncTask(
+        callFfi: () => _platform.inner.wire_derive_data_key(
+            _platform.api2wire_String(clientId),
+            _platform.api2wire_String(dataKey),
+            isPersonal),
+        parseSuccessData: _wire2api_SyncReturn_String,
+        constMeta: kDeriveDataKeyConstMeta,
+        argValues: [clientId, dataKey, isPersonal],
+        hint: hint,
+      ));
+
+  FlutterRustBridgeTaskConstMeta get kDeriveDataKeyConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "derive_data_key",
+        argNames: ["clientId", "dataKey", "isPersonal"],
       );
 
   String encryptText(
@@ -298,6 +334,112 @@ class ZpCryptoImpl implements ZpCrypto {
       const FlutterRustBridgeTaskConstMeta(
         debugName: "generate_shared_key",
         argNames: ["clientId", "userId"],
+      );
+
+  String generatePhemeral({dynamic hint}) =>
+      _platform.executeSync(FlutterRustBridgeSyncTask(
+        callFfi: () => _platform.inner.wire_generate_phemeral(),
+        parseSuccessData: _wire2api_SyncReturn_String,
+        constMeta: kGeneratePhemeralConstMeta,
+        argValues: [],
+        hint: hint,
+      ));
+
+  FlutterRustBridgeTaskConstMeta get kGeneratePhemeralConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "generate_phemeral",
+        argNames: [],
+      );
+
+  Future<String> generateLoginBody(
+          {required String clientId,
+          required String identifierName,
+          required String masterPassword,
+          required String secretKey,
+          required String clientPair,
+          required String serverPublicKey,
+          required String payload,
+          dynamic hint}) =>
+      _platform.executeNormal(FlutterRustBridgeTask(
+        callFfi: (port_) => _platform.inner.wire_generate_login_body(
+            port_,
+            _platform.api2wire_String(clientId),
+            _platform.api2wire_String(identifierName),
+            _platform.api2wire_String(masterPassword),
+            _platform.api2wire_String(secretKey),
+            _platform.api2wire_String(clientPair),
+            _platform.api2wire_String(serverPublicKey),
+            _platform.api2wire_String(payload)),
+        parseSuccessData: _wire2api_String,
+        constMeta: kGenerateLoginBodyConstMeta,
+        argValues: [
+          clientId,
+          identifierName,
+          masterPassword,
+          secretKey,
+          clientPair,
+          serverPublicKey,
+          payload
+        ],
+        hint: hint,
+      ));
+
+  FlutterRustBridgeTaskConstMeta get kGenerateLoginBodyConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "generate_login_body",
+        argNames: [
+          "clientId",
+          "identifierName",
+          "masterPassword",
+          "secretKey",
+          "clientPair",
+          "serverPublicKey",
+          "payload"
+        ],
+      );
+
+  String verifyServer(
+          {required String clientId,
+          required String clientPair,
+          required String serverIdentifierProof,
+          dynamic hint}) =>
+      _platform.executeSync(FlutterRustBridgeSyncTask(
+        callFfi: () => _platform.inner.wire_verify_server(
+            _platform.api2wire_String(clientId),
+            _platform.api2wire_String(clientPair),
+            _platform.api2wire_String(serverIdentifierProof)),
+        parseSuccessData: _wire2api_SyncReturn_String,
+        constMeta: kVerifyServerConstMeta,
+        argValues: [clientId, clientPair, serverIdentifierProof],
+        hint: hint,
+      ));
+
+  FlutterRustBridgeTaskConstMeta get kVerifyServerConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "verify_server",
+        argNames: ["clientId", "clientPair", "serverIdentifierProof"],
+      );
+
+  String calcPasswordHash(
+          {required String identifierName,
+          required String masterPassword,
+          required String secretKey,
+          dynamic hint}) =>
+      _platform.executeSync(FlutterRustBridgeSyncTask(
+        callFfi: () => _platform.inner.wire_calc_password_hash(
+            _platform.api2wire_String(identifierName),
+            _platform.api2wire_String(masterPassword),
+            _platform.api2wire_String(secretKey)),
+        parseSuccessData: _wire2api_SyncReturn_String,
+        constMeta: kCalcPasswordHashConstMeta,
+        argValues: [identifierName, masterPassword, secretKey],
+        hint: hint,
+      ));
+
+  FlutterRustBridgeTaskConstMeta get kCalcPasswordHashConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "calc_password_hash",
+        argNames: ["identifierName", "masterPassword", "secretKey"],
       );
 
 // Section: wire2api
@@ -525,8 +667,7 @@ class ZpCryptoWire implements FlutterRustBridgeWireBase {
   WireSyncReturnStruct wire_offline_login(
     ffi.Pointer<wire_uint_8_list> client_id,
     ffi.Pointer<wire_uint_8_list> identifier_name,
-    ffi.Pointer<wire_uint_8_list> master_password,
-    ffi.Pointer<wire_uint_8_list> secret_key,
+    ffi.Pointer<wire_uint_8_list> master_key,
     ffi.Pointer<wire_uint_8_list> master_key_hash,
     ffi.Pointer<wire_uint_8_list> personal_data_key,
     ffi.Pointer<wire_uint_8_list> enterprise_data_key,
@@ -535,8 +676,7 @@ class ZpCryptoWire implements FlutterRustBridgeWireBase {
     return _wire_offline_login(
       client_id,
       identifier_name,
-      master_password,
-      secret_key,
+      master_key,
       master_key_hash,
       personal_data_key,
       enterprise_data_key,
@@ -553,11 +693,9 @@ class ZpCryptoWire implements FlutterRustBridgeWireBase {
               ffi.Pointer<wire_uint_8_list>,
               ffi.Pointer<wire_uint_8_list>,
               ffi.Pointer<wire_uint_8_list>,
-              ffi.Pointer<wire_uint_8_list>,
               ffi.Bool)>>('wire_offline_login');
   late final _wire_offline_login = _wire_offline_loginPtr.asFunction<
       WireSyncReturnStruct Function(
-          ffi.Pointer<wire_uint_8_list>,
           ffi.Pointer<wire_uint_8_list>,
           ffi.Pointer<wire_uint_8_list>,
           ffi.Pointer<wire_uint_8_list>,
@@ -599,6 +737,48 @@ class ZpCryptoWire implements FlutterRustBridgeWireBase {
               ffi.Pointer<wire_uint_8_list>)>>('wire_destory');
   late final _wire_destory = _wire_destoryPtr.asFunction<
       WireSyncReturnStruct Function(ffi.Pointer<wire_uint_8_list>)>();
+
+  WireSyncReturnStruct wire_get_data_key_request_body(
+    ffi.Pointer<wire_uint_8_list> client_id,
+    ffi.Pointer<wire_uint_8_list> payload,
+  ) {
+    return _wire_get_data_key_request_body(
+      client_id,
+      payload,
+    );
+  }
+
+  late final _wire_get_data_key_request_bodyPtr = _lookup<
+          ffi.NativeFunction<
+              WireSyncReturnStruct Function(ffi.Pointer<wire_uint_8_list>,
+                  ffi.Pointer<wire_uint_8_list>)>>(
+      'wire_get_data_key_request_body');
+  late final _wire_get_data_key_request_body =
+      _wire_get_data_key_request_bodyPtr.asFunction<
+          WireSyncReturnStruct Function(
+              ffi.Pointer<wire_uint_8_list>, ffi.Pointer<wire_uint_8_list>)>();
+
+  WireSyncReturnStruct wire_derive_data_key(
+    ffi.Pointer<wire_uint_8_list> client_id,
+    ffi.Pointer<wire_uint_8_list> data_key,
+    bool is_personal,
+  ) {
+    return _wire_derive_data_key(
+      client_id,
+      data_key,
+      is_personal,
+    );
+  }
+
+  late final _wire_derive_data_keyPtr = _lookup<
+      ffi.NativeFunction<
+          WireSyncReturnStruct Function(
+              ffi.Pointer<wire_uint_8_list>,
+              ffi.Pointer<wire_uint_8_list>,
+              ffi.Bool)>>('wire_derive_data_key');
+  late final _wire_derive_data_key = _wire_derive_data_keyPtr.asFunction<
+      WireSyncReturnStruct Function(ffi.Pointer<wire_uint_8_list>,
+          ffi.Pointer<wire_uint_8_list>, bool)>();
 
   WireSyncReturnStruct wire_encrypt_text(
     ffi.Pointer<wire_uint_8_list> client_id,
@@ -658,6 +838,105 @@ class ZpCryptoWire implements FlutterRustBridgeWireBase {
               ffi.Int32)>>('wire_generate_shared_key');
   late final _wire_generate_shared_key = _wire_generate_shared_keyPtr
       .asFunction<void Function(int, ffi.Pointer<wire_uint_8_list>, int)>();
+
+  WireSyncReturnStruct wire_generate_phemeral() {
+    return _wire_generate_phemeral();
+  }
+
+  late final _wire_generate_phemeralPtr =
+      _lookup<ffi.NativeFunction<WireSyncReturnStruct Function()>>(
+          'wire_generate_phemeral');
+  late final _wire_generate_phemeral =
+      _wire_generate_phemeralPtr.asFunction<WireSyncReturnStruct Function()>();
+
+  void wire_generate_login_body(
+    int port_,
+    ffi.Pointer<wire_uint_8_list> client_id,
+    ffi.Pointer<wire_uint_8_list> identifier_name,
+    ffi.Pointer<wire_uint_8_list> master_password,
+    ffi.Pointer<wire_uint_8_list> secret_key,
+    ffi.Pointer<wire_uint_8_list> client_pair,
+    ffi.Pointer<wire_uint_8_list> server_public_key,
+    ffi.Pointer<wire_uint_8_list> payload,
+  ) {
+    return _wire_generate_login_body(
+      port_,
+      client_id,
+      identifier_name,
+      master_password,
+      secret_key,
+      client_pair,
+      server_public_key,
+      payload,
+    );
+  }
+
+  late final _wire_generate_login_bodyPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Int64,
+              ffi.Pointer<wire_uint_8_list>,
+              ffi.Pointer<wire_uint_8_list>,
+              ffi.Pointer<wire_uint_8_list>,
+              ffi.Pointer<wire_uint_8_list>,
+              ffi.Pointer<wire_uint_8_list>,
+              ffi.Pointer<wire_uint_8_list>,
+              ffi.Pointer<wire_uint_8_list>)>>('wire_generate_login_body');
+  late final _wire_generate_login_body =
+      _wire_generate_login_bodyPtr.asFunction<
+          void Function(
+              int,
+              ffi.Pointer<wire_uint_8_list>,
+              ffi.Pointer<wire_uint_8_list>,
+              ffi.Pointer<wire_uint_8_list>,
+              ffi.Pointer<wire_uint_8_list>,
+              ffi.Pointer<wire_uint_8_list>,
+              ffi.Pointer<wire_uint_8_list>,
+              ffi.Pointer<wire_uint_8_list>)>();
+
+  WireSyncReturnStruct wire_verify_server(
+    ffi.Pointer<wire_uint_8_list> client_id,
+    ffi.Pointer<wire_uint_8_list> client_pair,
+    ffi.Pointer<wire_uint_8_list> server_identifier_proof,
+  ) {
+    return _wire_verify_server(
+      client_id,
+      client_pair,
+      server_identifier_proof,
+    );
+  }
+
+  late final _wire_verify_serverPtr = _lookup<
+      ffi.NativeFunction<
+          WireSyncReturnStruct Function(
+              ffi.Pointer<wire_uint_8_list>,
+              ffi.Pointer<wire_uint_8_list>,
+              ffi.Pointer<wire_uint_8_list>)>>('wire_verify_server');
+  late final _wire_verify_server = _wire_verify_serverPtr.asFunction<
+      WireSyncReturnStruct Function(ffi.Pointer<wire_uint_8_list>,
+          ffi.Pointer<wire_uint_8_list>, ffi.Pointer<wire_uint_8_list>)>();
+
+  WireSyncReturnStruct wire_calc_password_hash(
+    ffi.Pointer<wire_uint_8_list> identifier_name,
+    ffi.Pointer<wire_uint_8_list> master_password,
+    ffi.Pointer<wire_uint_8_list> secret_key,
+  ) {
+    return _wire_calc_password_hash(
+      identifier_name,
+      master_password,
+      secret_key,
+    );
+  }
+
+  late final _wire_calc_password_hashPtr = _lookup<
+      ffi.NativeFunction<
+          WireSyncReturnStruct Function(
+              ffi.Pointer<wire_uint_8_list>,
+              ffi.Pointer<wire_uint_8_list>,
+              ffi.Pointer<wire_uint_8_list>)>>('wire_calc_password_hash');
+  late final _wire_calc_password_hash = _wire_calc_password_hashPtr.asFunction<
+      WireSyncReturnStruct Function(ffi.Pointer<wire_uint_8_list>,
+          ffi.Pointer<wire_uint_8_list>, ffi.Pointer<wire_uint_8_list>)>();
 
   ffi.Pointer<wire_uint_8_list> new_uint_8_list_0(
     int len,

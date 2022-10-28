@@ -54,8 +54,7 @@ abstract class ZpCrypto {
   String offlineLogin(
       {required String clientId,
       required String identifierName,
-      required String masterPassword,
-      required String secretKey,
+      required String masterKey,
       required String masterKeyHash,
       String? personalDataKey,
       String? enterpriseDataKey,
@@ -73,6 +72,21 @@ abstract class ZpCrypto {
   String destory({required String clientId, dynamic hint});
 
   FlutterRustBridgeTaskConstMeta get kDestoryConstMeta;
+
+  /// 根据传入ID，生成 请求个人/企业datakey接口的请求体, payload 为随机字符串，13位毫秒级的时间戳
+  String getDataKeyRequestBody(
+      {required String clientId, required String payload, dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kGetDataKeyRequestBodyConstMeta;
+
+  /// 根据传入ID，使用该crypto对象配置 个人的datakey，用于加解密
+  String deriveDataKey(
+      {required String clientId,
+      required String dataKey,
+      required bool isPersonal,
+      dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kDeriveDataKeyConstMeta;
 
   /// 根据传入ID，使用该crypto对象配置 个人的datakey，用于加解密
   /// 根据传入ID，使用该crypto对象 配置企业的datakey，用于加解密
@@ -99,4 +113,40 @@ abstract class ZpCrypto {
       {required String clientId, required int userId, dynamic hint});
 
   FlutterRustBridgeTaskConstMeta get kGenerateSharedKeyConstMeta;
+
+  /// 登录前，生成当前会话的公私钥
+  String generatePhemeral({dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kGeneratePhemeralConstMeta;
+
+  /// 登录过程，与服务端交换公钥后，生成请求体请求服务端进行校验, payload 为随机字符串，13位毫秒级的时间戳
+  Future<String> generateLoginBody(
+      {required String clientId,
+      required String identifierName,
+      required String masterPassword,
+      required String secretKey,
+      required String clientPair,
+      required String serverPublicKey,
+      required String payload,
+      dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kGenerateLoginBodyConstMeta;
+
+  /// 请求服务端认证后返回后，需要由客户端认证服务端
+  String verifyServer(
+      {required String clientId,
+      required String clientPair,
+      required String serverIdentifierProof,
+      dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kVerifyServerConstMeta;
+
+  /// 计算三要素的hash
+  String calcPasswordHash(
+      {required String identifierName,
+      required String masterPassword,
+      required String secretKey,
+      dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kCalcPasswordHashConstMeta;
 }

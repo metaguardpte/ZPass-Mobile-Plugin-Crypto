@@ -48,8 +48,7 @@ void wire_relogin(int64_t port_,
 
 struct WireSyncReturnStruct wire_offline_login(struct wire_uint_8_list *client_id,
                                                struct wire_uint_8_list *identifier_name,
-                                               struct wire_uint_8_list *master_password,
-                                               struct wire_uint_8_list *secret_key,
+                                               struct wire_uint_8_list *master_key,
                                                struct wire_uint_8_list *master_key_hash,
                                                struct wire_uint_8_list *personal_data_key,
                                                struct wire_uint_8_list *enterprise_data_key,
@@ -58,6 +57,13 @@ struct WireSyncReturnStruct wire_offline_login(struct wire_uint_8_list *client_i
 void wire_pre_cache_data_key(int64_t port_, struct wire_uint_8_list *client_id, bool is_personal);
 
 struct WireSyncReturnStruct wire_destory(struct wire_uint_8_list *client_id);
+
+struct WireSyncReturnStruct wire_get_data_key_request_body(struct wire_uint_8_list *client_id,
+                                                           struct wire_uint_8_list *payload);
+
+struct WireSyncReturnStruct wire_derive_data_key(struct wire_uint_8_list *client_id,
+                                                 struct wire_uint_8_list *data_key,
+                                                 bool is_personal);
 
 struct WireSyncReturnStruct wire_encrypt_text(struct wire_uint_8_list *client_id,
                                               struct wire_uint_8_list *plaintext,
@@ -68,6 +74,25 @@ struct WireSyncReturnStruct wire_decrypt_text(struct wire_uint_8_list *client_id
                                               bool is_personal);
 
 void wire_generate_shared_key(int64_t port_, struct wire_uint_8_list *client_id, int32_t user_id);
+
+struct WireSyncReturnStruct wire_generate_phemeral(void);
+
+void wire_generate_login_body(int64_t port_,
+                              struct wire_uint_8_list *client_id,
+                              struct wire_uint_8_list *identifier_name,
+                              struct wire_uint_8_list *master_password,
+                              struct wire_uint_8_list *secret_key,
+                              struct wire_uint_8_list *client_pair,
+                              struct wire_uint_8_list *server_public_key,
+                              struct wire_uint_8_list *payload);
+
+struct WireSyncReturnStruct wire_verify_server(struct wire_uint_8_list *client_id,
+                                               struct wire_uint_8_list *client_pair,
+                                               struct wire_uint_8_list *server_identifier_proof);
+
+struct WireSyncReturnStruct wire_calc_password_hash(struct wire_uint_8_list *identifier_name,
+                                                    struct wire_uint_8_list *master_password,
+                                                    struct wire_uint_8_list *secret_key);
 
 struct wire_uint_8_list *new_uint_8_list_0(int32_t len);
 
@@ -83,9 +108,15 @@ static int64_t dummy_method_to_enforce_bundling(void) {
     dummy_var ^= ((int64_t) (void*) wire_offline_login);
     dummy_var ^= ((int64_t) (void*) wire_pre_cache_data_key);
     dummy_var ^= ((int64_t) (void*) wire_destory);
+    dummy_var ^= ((int64_t) (void*) wire_get_data_key_request_body);
+    dummy_var ^= ((int64_t) (void*) wire_derive_data_key);
     dummy_var ^= ((int64_t) (void*) wire_encrypt_text);
     dummy_var ^= ((int64_t) (void*) wire_decrypt_text);
     dummy_var ^= ((int64_t) (void*) wire_generate_shared_key);
+    dummy_var ^= ((int64_t) (void*) wire_generate_phemeral);
+    dummy_var ^= ((int64_t) (void*) wire_generate_login_body);
+    dummy_var ^= ((int64_t) (void*) wire_verify_server);
+    dummy_var ^= ((int64_t) (void*) wire_calc_password_hash);
     dummy_var ^= ((int64_t) (void*) new_uint_8_list_0);
     dummy_var ^= ((int64_t) (void*) free_WireSyncReturnStruct);
     dummy_var ^= ((int64_t) (void*) store_dart_post_cobject);

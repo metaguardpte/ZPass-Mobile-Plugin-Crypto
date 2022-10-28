@@ -8,11 +8,11 @@ class ZpassCrypto {
     return ZpassCryptoPlatform.instance.getPlatformVersion();
   }
 
-  Future<String?> generateSecretKey({dynamic hint}) {
+  String? generateSecretKey({dynamic hint}) {
     try {
-      return Future.value(zpCrypto.generateSecretKey(hint: hint));
+      return zpCrypto.generateSecretKey(hint: hint);
     } catch (e) {
-      return Future.value(null);
+      return null;
     }
   }
 
@@ -20,28 +20,29 @@ class ZpassCrypto {
       {required String identifierName,
         required String masterPassword,
         required String raw,
-        dynamic hint}) {
+        dynamic hint}) async {
     try {
-      return zpCrypto.createUserKeyModel(
+      final resp = zpCrypto.createUserKeyModel(
         identifierName: identifierName,
         masterPassword: masterPassword,
         raw: raw,
         hint: hint,
       );
+      return resp;
     } catch (e) {
      return Future.value(null);
     }
   }
 
-  Future<String?> newCryptoService({dynamic hint}) {
+  String? newCryptoService({dynamic hint}) {
     try {
-      return Future.value(zpCrypto.newCryptoService(hint: hint));
+      return zpCrypto.newCryptoService(hint: hint);
     } catch (e) {
-      return Future.value(null);
+      return null;
     }
   }
 
-  Future<String?> login(
+  Future<String?> login (
       {required String clientId,
         required String identifierName,
         required String masterPassword,
@@ -49,95 +50,104 @@ class ZpassCrypto {
         required String host,
         required String headerJson,
         required bool isPersonal,
-        dynamic hint}) {
+        dynamic hint}) async {
     try {
-      return Future.value(
-        zpCrypto.login(
-            clientId: clientId,
-            identifierName: identifierName,
-            masterPassword: masterPassword,
-            secretKey: secretKey,
-            host: host,
-            headerJson: headerJson,
-            isPersonal: isPersonal,
-            hint: hint,
-        ),
+      final resp = await zpCrypto.login(
+        clientId: clientId,
+        identifierName: identifierName,
+        masterPassword: masterPassword,
+        secretKey: secretKey,
+        host: host,
+        headerJson: headerJson,
+        isPersonal: isPersonal,
+        hint: hint,
       );
+      return resp;
     } catch (e) {
       return Future.value(null);
     }
   }
 
-  Future<String?> offlineLogin(
+  String? offlineLogin(
       {required String clientId,
         required String identifierName,
-        required String masterPassword,
-        required String secretKey,
+        required String masterKey,
         required String masterKeyHash,
         String? personalDataKey,
         String? enterpriseDataKey,
         required bool isPersonal,
         dynamic hint}) {
     try {
-      return Future.value(
-        zpCrypto.offlineLogin(
-          clientId: clientId,
-          identifierName: identifierName,
-          masterPassword: masterPassword,
-          secretKey: secretKey,
-          masterKeyHash: masterKeyHash,
-          isPersonal: isPersonal,
-          hint: hint,
-        ),
+      return zpCrypto.offlineLogin(
+        clientId: clientId,
+        identifierName: identifierName,
+        masterKey: masterKey,
+        masterKeyHash: masterKeyHash,
+        personalDataKey: personalDataKey,
+        enterpriseDataKey: enterpriseDataKey,
+        isPersonal: isPersonal,
+        hint: hint,
       );
     } catch(e) {
-      return Future.value(null);
+      return null;
     }
   }
 
-  Future<String?> encryptText(
+  String? encryptText(
       {required String clientId,
         required String plaintext,
         required bool isPersonal,
         dynamic hint}) {
     try {
-      return Future.value(
-        zpCrypto.encryptText(
-          clientId: clientId,
-          plaintext: plaintext,
-          isPersonal: isPersonal,
-          hint: hint,
-        ),
+      return zpCrypto.encryptText(
+        clientId: clientId,
+        plaintext: plaintext,
+        isPersonal: isPersonal,
+        hint: hint,
       );
     } catch (e) {
-      return Future.value(null);
+      return null;
     }
   }
 
-  Future<String?> decryptText(
+  String? decryptText(
       {required String clientId,
         required String cipherText,
         required bool isPersonal,
         dynamic hint}) {
     try {
-      return Future.value(
-        zpCrypto.decryptText(
-          clientId: clientId,
-          cipherText: cipherText,
-          isPersonal: isPersonal,
-          hint: hint,
-        ),
+      return zpCrypto.decryptText(
+        clientId: clientId,
+        cipherText: cipherText,
+        isPersonal: isPersonal,
+        hint: hint,
       );
     } catch (e) {
-      return Future.value(null);
+      return null;
     }
   }
 
-  Future<String?> destroy({required String clientId, dynamic hint}) {
+  String? calcPasswordHash(
+      {required String identifierName,
+        required String masterPassword,
+        required String secretKey,
+        dynamic hint}) {
     try {
-      return Future.value(zpCrypto.destory(clientId: clientId, hint: hint));
+      return zpCrypto.calcPasswordHash(
+        identifierName: identifierName,
+        masterPassword: masterPassword,
+        secretKey: secretKey,
+      );
     } catch (e) {
-      return Future.value(null);
+      return null;
+    }
+  }
+
+  String? destroy({required String clientId, dynamic hint}) {
+    try {
+      return zpCrypto.destory(clientId: clientId, hint: hint);
+    } catch (e) {
+      return null;
     }
   }
 }

@@ -23,7 +23,7 @@ public class SwiftZpassCryptoPlugin: NSObject, FlutterPlugin {
      wire_new_crypto_service()
      wire_login(0, nil, nil, nil, nil, nil, nil, false)
      wire_relogin(0, nil, nil, nil, nil, false)
-     wire_offline_login(nil, nil, nil, nil, nil, nil, nil, false)
+     wire_offline_login(nil, nil, nil, nil, nil, nil, false)
      wire_pre_cache_data_key(0, nil, false)
      wire_destory(nil)
      wire_encrypt_text(nil, nil, false)
@@ -32,6 +32,7 @@ public class SwiftZpassCryptoPlugin: NSObject, FlutterPlugin {
      new_uint_8_list_0(0)
      free_WireSyncReturnStruct(WireSyncReturnStruct())
      store_dart_post_cobject(nil)
+     wire_calc_password_hash(nil, nil, nil)
   }
 
 }
