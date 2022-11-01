@@ -18,5 +18,5 @@ const _base = 'zp_crypto';
 final _dylib = io.Platform.isWindows ? '$_base.dll' : 'lib$_base.so';
 
 final ZpCrypto zpCrypto = ZpCryptoImpl(io.Platform.isIOS || io.Platform.isMacOS
-    ? DynamicLibrary.executable()
+    ? DynamicLibrary.process()
     : DynamicLibrary.open(_dylib));
