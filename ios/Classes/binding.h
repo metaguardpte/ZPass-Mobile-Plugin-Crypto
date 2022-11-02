@@ -21,6 +21,8 @@ typedef struct WireSyncReturnStruct {
 
 void zp_store_dart_post_cobject(DartPostCObjectFnType ptr);
 
+void store_dart_post_cobject(DartPostCObjectFnType ptr);
+
 void wire_create_user_key_model(int64_t port_,
                                 struct wire_uint_8_list *identifier_name,
                                 struct wire_uint_8_list *master_password,
@@ -119,6 +121,6 @@ static int64_t dummy_method_to_enforce_bundling(void) {
     dummy_var ^= ((int64_t) (void*) wire_calc_password_hash);
     dummy_var ^= ((int64_t) (void*) new_uint_8_list_0);
     dummy_var ^= ((int64_t) (void*) free_WireSyncReturnStruct);
-    dummy_var ^= ((int64_t) (void*) zp_store_dart_post_cobject);
+    dummy_var ^= ((int64_t) (void*) store_dart_post_cobject);
     return dummy_var;
 }
