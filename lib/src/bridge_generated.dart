@@ -13,6 +13,8 @@ import 'dart:async';
 import 'package:flutter_rust_bridge/flutter_rust_bridge.dart';
 import 'package:meta/meta.dart';
 import 'dart:ffi' as ffi;
+import 'dart:io' as io;
+
 
 class ZpCryptoImpl implements ZpCrypto {
   final ZpCryptoPlatform _platform;
@@ -524,19 +526,23 @@ class ZpCryptoWire implements FlutterRustBridgeWireBase {
           lookup)
       : _lookup = lookup;
 
-  void store_dart_post_cobject(
-    DartPostCObjectFnType ptr,
-  ) {
-    return _store_dart_post_cobject(
-      ptr,
-    );
+  void store_dart_post_cobject(DartPostCObjectFnType ptr) {
+    return io.Platform.isIOS ? zp_store_dart_post_cobject(ptr) : _store_dart_post_cobject(ptr);
   }
 
   late final _store_dart_post_cobjectPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(DartPostCObjectFnType)>>(
-          'zp_store_dart_post_cobject');
+  _lookup<ffi.NativeFunction<ffi.Void Function(DartPostCObjectFnType)>>(
+            'store_dart_post_cobject');
   late final _store_dart_post_cobject = _store_dart_post_cobjectPtr
       .asFunction<void Function(DartPostCObjectFnType)>();
+
+   late final zp_store_dart_post_cobjectPtr =
+       _lookup<ffi.NativeFunction<ffi.Void Function(DartPostCObjectFnType)>>(
+         'zp_store_dart_post_cobject');
+   late final zp_store_dart_post_cobject = zp_store_dart_post_cobjectPtr
+      .asFunction<void Function(DartPostCObjectFnType)>();
+
+
 
   void wire_create_user_key_model(
     int port_,
